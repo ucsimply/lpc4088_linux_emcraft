@@ -374,9 +374,9 @@ static const struct lpc178x_gpio_pin_config ea_lpc1788_gpio[] = {
 	/* P1.15 (D) = RMII CLK */
 	{{1, 15}, LPC178X_GPIO_CONFIG_D(1, LPC178X_NO_PULLUP, 0, 0, 0, 0)},
 	/* P1.16 (D) = RMII MCD */
-	{{1, 16}, LPC178X_GPIO_CONFIG_D(1, LPC178X_NO_PULLUP, 0, 0, 0, 0)},
+	{{1, 16}, LPC178X_GPIO_CONFIG_W(1, LPC178X_NO_PULLUP, 0, 0, 0, 0, 0)},
 	/* P1.17 (D) = RMII MDIO */
-	{{1, 17}, LPC178X_GPIO_CONFIG_D(1, LPC178X_NO_PULLUP, 0, 0, 0, 0)},
+	{{1, 17}, LPC178X_GPIO_CONFIG_W(1, LPC178X_NO_PULLUP, 0, 0, 0, 0, 0)},
 #endif /* CONFIG_LPC178X_ETHER */
 
 #if defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE)
