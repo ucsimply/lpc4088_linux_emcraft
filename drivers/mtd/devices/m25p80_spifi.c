@@ -707,13 +707,20 @@ static struct platform_device_id m25p_spifi_ids[] = {
 	{ "s25fl129p1", INFO(0x012018, 0x4d01,  64 * 1024, 256, 0) },
 	{ "s25fl256s1", INFO(0x010219, 0x4d01,  64 * 1024, 512,
 		M25P_QUAD | M25P_WEN_EACH) },
+	/* Spansion S25FL-K legacy devices are replaced with S25FL1-K
+	 * The S25FL-K family returns Winbond manufacturer ID 0xEF
+	 */
+	 /*
 	{ "s25fl008k",  INFO(0xef4014,      0,  64 * 1024,  16,
 		SECT_4K | M25P_QUAD | M25P_WEN_EACH) },
 	{ "s25fl016k",  INFO(0xef4015,      0,  64 * 1024,  32,
 		SECT_4K | M25P_QUAD | M25P_WEN_EACH) },
 	{ "s25fl064k",  INFO(0xef4017,      0,  64 * 1024, 128,
 		SECT_4K | M25P_QUAD | M25P_WEN_EACH) },
+	*/
 	{ "s25fl132k",  INFO(0x014016,      0,  64 * 1024,  64,
+		SECT_4K | M25P_QUAD | M25P_WEN_EACH) },
+	{ "s25fl164k",  INFO(0x014017,      0,  64 * 1024, 128,
 		SECT_4K | M25P_QUAD | M25P_WEN_EACH) },
 
 	/* SST -- large erase sizes are "overlays", "sectors" are 4K */
@@ -752,6 +759,14 @@ static struct platform_device_id m25p_spifi_ids[] = {
 	{ "w25x16", INFO(0xef3015, 0, 64 * 1024,  32, SECT_4K) },
 	{ "w25x32", INFO(0xef3016, 0, 64 * 1024,  64, SECT_4K) },
 	{ "w25x64", INFO(0xef3017, 0, 64 * 1024, 128, SECT_4K) },
+
+	{ "w25q64", INFO(0xef4017, 0, 64 * 1024, 128, 
+		/*SECT_4K |*/ M25P_QUAD | M25P_WEN_EACH) },
+
+/* Commented out the SECT_4K flag.
+ * The mkfs.jffs2 utility complains about an erase block less than 8KiB.
+ * Use OPCODE_SE (Sector erase, 64KiB) instead of OPCODE_BE_4K.
+ */
 
 	/* Catalyst / On Semiconductor -- non-JEDEC */
 	{ "cat25c11", CAT25_INFO(  16, 8, 16, 1) },
@@ -932,6 +947,7 @@ static int __devinit m25p_spifi_probe(struct platform_device *pdev)
 
 	/* Reset cache. Somehow this is required */
 	if (spifi_memory_mode(flash, &mem)) {
+		dev_err(&pdev->dev, "Unable to reset cache\n");
 		kfree(flash);
 		return -ENXIO;
 	}

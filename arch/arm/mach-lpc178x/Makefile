@@ -18,3 +18,4 @@ obj-$(CONFIG_GPIOLIB)		+= gpio.o
 obj-$(CONFIG_RTC_DRV_LPC178X)	+= rtc.o
 obj-$(CONFIG_LPC2K_WATCHDOG)	+= wdt.o
 obj-$(CONFIG_MTD_NAND)		+= nand.o
+obj-$(CONFIG_MTD_M25P80_SPIFI)	+= spifi.o

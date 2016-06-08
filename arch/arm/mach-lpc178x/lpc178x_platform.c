@@ -40,6 +40,7 @@
 #include <mach/uart.h>
 #include <mach/eth.h>
 #include <mach/spi.h>
+#include <mach/spifi.h>
 #include <mach/flash.h>
 #include <mach/nand.h>
 #include <mach/dma.h>
@@ -65,7 +66,7 @@ static void __init lpc178x_init(void);
 /*
  * Define a particular platform (board)
  */
-static int lpc178x_platform = PLATFORM_LPC178X_EA_LPC1788;
+static int lpc178x_platform = PLATFORM_LPC40XX_UCS_LPC4088;
 
 /*
  * Data structure for the timer system.
@@ -94,9 +95,13 @@ int lpc178x_device_get(void)
 	switch (lpc178x_platform) {
 	case PLATFORM_LPC178X_LNX_EVB:
 		r = DEVICE_EMCRAFT_LPC_LNX_EVB;
+		break;
 	case PLATFORM_LPC178X_EA_LPC1788:
-	default:
 		r = DEVICE_EA_LPC1788;
+		break;
+	case PLATFORM_LPC40XX_UCS_LPC4088:
+	default:
+		r = DEVICE_UCS_LPC4088;
 		break;
 	}
 	return r;
@@ -107,7 +112,9 @@ int lpc178x_device_get(void)
  */
 static int __init lpc178x_platform_parse(char *s)
 {
-	if (!strcmp(s, "ea-lpc1788"))
+	if (!strcmp(s, "ucs-lpc4088"))
+		lpc178x_platform = PLATFORM_LPC40XX_UCS_LPC4088;
+	else if (!strcmp(s, "ea-lpc1788"))
 		lpc178x_platform = PLATFORM_LPC178X_EA_LPC1788;
 	else if (!strcmp(s, "lpc-lnx-evb"))
 		lpc178x_platform = PLATFORM_LPC178X_LNX_EVB;
@@ -119,7 +126,7 @@ __setup("lpc178x_platform=", lpc178x_platform_parse);
 /*
  * LPC178x/7x plaform machine description.
  */
-MACHINE_START(LPC178X, "NXP LPC178x/7x")
+MACHINE_START(LPC178X, "NXP LPC178x/40xx")
 	/*
 	 * Physical address of the serial port used for the early
 	 * kernel debugging (CONFIG_DEBUG_LL=y).
@@ -265,6 +272,13 @@ static void __init lpc178x_init(void)
 	 */
 	lpc178x_i2c_gpio_init();
 #endif /* defined(CONFIG_I2C_GPIO) || defined(CONFIG_I2C_GPIO_MODULE) */
+
+#if defined(CONFIG_MTD_M25P80_SPIFI)
+	/*
+	 * Configure the M25P80 over SPIFI driver
+	 */
+	lpc40xx_spifi_init();
+#endif
 
 #if defined(CONFIG_FB_ARMCLCD)
 	/*

@@ -27,11 +27,13 @@
 
 #define PLATFORM_LPC178X_EA_LPC1788	0
 #define PLATFORM_LPC178X_LNX_EVB	1
+#define PLATFORM_LPC40XX_UCS_LPC4088	2
 
 int lpc178x_platform_get(void);
 
 #define DEVICE_EA_LPC1788		0
 #define DEVICE_EMCRAFT_LPC_LNX_EVB	1
+#define DEVICE_UCS_LPC4088		2
 
 int lpc178x_device_get(void);
 

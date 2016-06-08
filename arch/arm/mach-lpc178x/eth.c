@@ -88,6 +88,7 @@ void __init lpc178x_eth_init(void)
 	switch (platform) {
 	case PLATFORM_LPC178X_EA_LPC1788:
 	case PLATFORM_LPC178X_LNX_EVB:
+	case PLATFORM_LPC40XX_UCS_LPC4088:
 		lpc178x_net_device.dev.platform_data = &lpc178x_common_eth_data;
 		break;
 	default:

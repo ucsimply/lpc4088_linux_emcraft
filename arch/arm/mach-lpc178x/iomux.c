@@ -566,9 +566,9 @@ static const struct lpc178x_gpio_pin_config lpc_lnx_evb_gpio[] = {
 	/* P1.15 (D) = RMII CLK */
 	{{1, 15}, LPC178X_GPIO_CONFIG_D(1, LPC178X_NO_PULLUP, 0, 0, 0, 0)},
 	/* P1.16 (D) = RMII MCD */
-	{{1, 16}, LPC178X_GPIO_CONFIG_D(1, LPC178X_NO_PULLUP, 0, 0, 0, 0)},
+	{{1, 16}, LPC178X_GPIO_CONFIG_W(1, LPC178X_NO_PULLUP, 0, 0, 0, 0, 0)},
 	/* P1.17 (D) = RMII MDIO */
-	{{1, 17}, LPC178X_GPIO_CONFIG_D(1, LPC178X_NO_PULLUP, 0, 0, 0, 0)},
+	{{1, 17}, LPC178X_GPIO_CONFIG_W(1, LPC178X_NO_PULLUP, 0, 0, 0, 0, 0)},
 #endif /* CONFIG_LPC178X_ETHER */
 
 #ifdef CONFIG_LPC178X_SPI0
@@ -584,6 +584,66 @@ static const struct lpc178x_gpio_pin_config lpc_lnx_evb_gpio[] = {
 	/* P0.18 (D) = SSP0_MOSI */
 	{{0, 18}, LPC178X_GPIO_CONFIG_D(2, LPC178X_NO_PULLUP, 0, 0, 0, 0)},
 #endif
+};
+
+/*
+ * GPIO pin configuration table for the uCSimply LPC4088 module
+ */
+static const struct lpc178x_gpio_pin_config ucs_lpc4088_gpio[] = {
+#ifdef CONFIG_LPC178X_UART0
+	/*
+	 * GPIO configuration for UART0
+	 */
+	/* P0.2 (D) = UART0 TXD */
+	{{0,  2}, LPC178X_GPIO_CONFIG_D(1, LPC178X_NO_PULLUP, 0, 0, 0, 0)},
+	/* P0.3 (D) = UART0 RXD */
+	{{0,  3}, LPC178X_GPIO_CONFIG_D(1, LPC178X_NO_PULLUP, 0, 0, 0, 0)},
+#endif /* CONFIG_LPC178X_UART0 */
+
+#ifdef CONFIG_LPC178X_ETHER
+	/*
+	 * GPIO configuration for Ethernet
+	 */
+	/* P1.0 (D) = RMII ENET_TXD0 */
+	{{1,  0}, LPC178X_GPIO_CONFIG_D(1, LPC178X_NO_PULLUP, 0, 0, 1, 0)},
+	/* P1.1 (D) = RMII ENET_TXD1 */
+	{{1,  1}, LPC178X_GPIO_CONFIG_D(1, LPC178X_NO_PULLUP, 0, 0, 1, 0)},
+	/* P1.4 (D) = RMII ENET_TX_EN */
+	{{1,  4}, LPC178X_GPIO_CONFIG_D(1, LPC178X_NO_PULLUP, 0, 0, 1, 0)},
+	/* P1.8 (D) = RMII CRS */
+	{{1,  8}, LPC178X_GPIO_CONFIG_D(1, LPC178X_NO_PULLUP, 0, 0, 1, 0)},
+	/* P1.9 (D) = RMII RXD0 */
+	{{1,  9}, LPC178X_GPIO_CONFIG_D(1, LPC178X_NO_PULLUP, 0, 0, 1, 0)},
+	/* P1.10 (D) = RMII RXD1 */
+	{{1, 10}, LPC178X_GPIO_CONFIG_D(1, LPC178X_NO_PULLUP, 0, 0, 1, 0)},
+	/* P1.14 (D) = RMII RXER */
+	{{1, 14}, LPC178X_GPIO_CONFIG_D(1, LPC178X_NO_PULLUP, 0, 0, 0, 0)},
+	/* P1.15 (D) = RMII CLK */
+	{{1, 15}, LPC178X_GPIO_CONFIG_D(1, LPC178X_NO_PULLUP, 0, 0, 0, 0)},
+	/* P1.16 (W) = RMII MCD */
+	{{1, 16}, LPC178X_GPIO_CONFIG_W(1, LPC178X_NO_PULLUP, 0, 0, 0, 0, 0)},
+	/* P1.17 (W) = RMII MDIO */
+	{{1, 17}, LPC178X_GPIO_CONFIG_W(1, LPC178X_NO_PULLUP, 0, 0, 0, 0, 0)},
+#endif /* CONFIG_LPC178X_ETHER */
+
+#if defined(CONFIG_MTD_M25P80_SPIFI)
+	/*
+	 * GPIO configuration for SPIFI on LPC4088
+	 */
+	/* P0.15 (D) = SPIFI_IO_2 */
+	{{0, 15}, LPC178X_GPIO_CONFIG_D(5, LPC178X_NO_PULLUP, 0, 0, 1, 0)},
+	/* P0.16 (D) = SPIFI_IO_3 */
+	{{0, 16}, LPC178X_GPIO_CONFIG_D(5, LPC178X_NO_PULLUP, 0, 0, 1, 0)},
+	/* P0.17 (D) = SPIFI_IO_1 */
+	{{0, 17}, LPC178X_GPIO_CONFIG_D(5, LPC178X_NO_PULLUP, 0, 0, 1, 0)},
+	/* P0.18 (D) = SPIFI_IO_0 */
+	{{0, 18}, LPC178X_GPIO_CONFIG_D(5, LPC178X_NO_PULLUP, 0, 0, 1, 0)},
+	/* P0.22 (D) = SPIFI_CLK */
+	{{0, 22}, LPC178X_GPIO_CONFIG_D(5, LPC178X_NO_PULLUP, 0, 0, 1, 0)},
+	/* P2.7  (D) = SPIFI_CS */
+	{{2,  7}, LPC178X_GPIO_CONFIG_D(5, LPC178X_NO_PULLUP, 0, 0, 1, 0)},
+#endif
+
 };
 
 /*
@@ -608,6 +668,10 @@ void __init lpc178x_iomux_init(void)
 	 */
 	platform = lpc178x_platform_get();
 	switch (platform) {
+	case PLATFORM_LPC40XX_UCS_LPC4088:
+		lpc178x_gpio_config_table(
+			ucs_lpc4088_gpio, ARRAY_SIZE(ucs_lpc4088_gpio));
+		break;
 	case PLATFORM_LPC178X_EA_LPC1788:
 		lpc178x_gpio_config_table(
 			ea_lpc1788_gpio, ARRAY_SIZE(ea_lpc1788_gpio));

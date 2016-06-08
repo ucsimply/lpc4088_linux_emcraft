@@ -29,6 +29,9 @@
  * 1-bit masks for PCONP (Power Control for Peripherals register) for different
  * peripherals that enable power on them. One of these masks should be passed
  * as the first argument of `lpc178x_periph_enable`.
+ * 
+ * SPIFI interface (PCSPIFI bit) is available only on
+ * LPC1773 and LPC40XX devices
  */
 #define LPC178X_SCC_PCONP_PCLCD_MSK	(1 << 0)
 #define LPC178X_SCC_PCONP_PCTIM0_MSK	(1 << 1)
@@ -39,6 +42,7 @@
 #define LPC178X_SCC_PCONP_PCUART4_MSK	(1 << 8)
 #define LPC178X_SCC_PCONP_PCEMC_MSK	(1 << 11)
 #define LPC178X_SCC_PCONP_PCGPIO_MSK	(1 << 15)
+#define LPC178X_SCC_PCONP_PCSPIFI_MSK	(1 << 16)
 #define LPC178X_SCC_PCONP_PCI2C1_MSK	(1 << 19)
 #define LPC178X_SCC_PCONP_PCSSP0_MSK	(1 << 21)
 #define LPC178X_SCC_PCONP_PCUART2_MSK	(1 << 24)

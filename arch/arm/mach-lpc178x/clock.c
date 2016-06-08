@@ -295,6 +295,16 @@ static struct clk clk_ssp0 = {
 #endif
 
 /*
+ * Clock for SPIFI interface of LPC40XX and LPC1773 parts.
+ * The clock rate is initialized in `lpc178x_clock_init()`.
+#if defined(CONFIG_MTD_M25P80_SPIFI)
+static struct clk clk_spifi = {
+	.pconp_mask	= LPC178X_SCC_PCONP_PCSPIFI_MSK,
+};
+#endif
+ */
+
+/*
  * Clock for the SD Card Interface module of the MCU. The clock rate
  * is initialized in `lpc178x_clock_init()`.
  */
@@ -420,6 +430,16 @@ void __init lpc178x_clock_init(void)
 			 *
 			 * See CONFIG_LPC178X_EXTOSC_RATE in
 			 * u-boot/include/configs/lpc-lnx-evb.h
+			 */
+			sysclk = 12000000;	/* 12 MHz */
+			break;
+		case PLATFORM_LPC40XX_UCS_LPC4088:
+			/*
+			 * This frequency should be set to the same value as
+			 * in U-Boot for this board.
+			 *
+			 * See CONFIG_LPC178X_EXTOSC_RATE in
+			 * u-boot/include/configs/ucs-lpc4088.h
 			 */
 			sysclk = 12000000;	/* 12 MHz */
 			break;

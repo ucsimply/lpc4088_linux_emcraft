@@ -100,8 +100,17 @@ struct lpc178x_scc_regs {
 	u32 scs;	/* System Controls and Status register */
 	u32 rsv3;
 	u32 pclksel;	/* Peripheral Clock Selection register */
+
 	/* 0x400FC1AC */
-	u32 rsv4[6];
+	u32 rsv4[2];
+
+	/* 0x400FC1B4 */
+	u32 spificlksel;/* SPIFI Clock Selection register 
+			 * SPIFI interface is available only
+			 * on LPC40XX and LPC1773 devices */
+
+	/* 0x400FC1B8 */
+	u32 rsv4a[3];
 
 	/* 0x400FC1C4 */
 	u32 dmacreqsel;	/* DMA Request Select register */
